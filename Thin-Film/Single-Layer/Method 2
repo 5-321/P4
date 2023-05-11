@@ -1,0 +1,68 @@
+clear all
+n_SiN = 2.0105;
+n_Si = 3.8823;
+n_0 = 1;
+
+lambda_0 = 630;
+d = lambda_0/(4*n_SiN);
+wl = linspace(400,800,401);
+for theta = [0 pi/6 pi/3]
+
+for x = 1:length(wl)
+    n_01 = n_SiN/n_0;
+    n_12 = n_Si/n_SiN;
+
+    theta_2 = asin((n_0/n_SiN)*sin(theta));
+
+    t_s_01 = (2*cos(theta))/(cos(theta)+sqrt(n_01^2-(sin(theta))^2));
+    t_s_12 = (2*cos(theta_2))/(cos(theta_2)+sqrt(n_12^2-(sin(theta_2))^2));
+
+    r_p_01 = (-n_01^2*cos(theta)+sqrt(n_01^2-(sin(theta))^2))/(n_01^2*cos(theta)+sqrt(n_01^2-(sin(theta))^2));
+    r_p_12 = (-n_12^2*cos(theta_2)+sqrt(n_12^2-(sin(theta_2))^2))/(n_12^2*cos(theta_2)+sqrt(n_12^2-(sin(theta_2))^2));
+
+    r_s_01 = (cos(theta)-sqrt(n_01^2-(sin(theta))^2))/(cos(theta)+sqrt(n_01^2-(sin(theta))^2));
+    r_s_12 = (cos(theta_2)-sqrt(n_12^2-(sin(theta_2))^2))/(cos(theta_2)+sqrt(n_12^2-(sin(theta_2))^2));
+
+    t_p_01 = (2*n_01*cos(theta))/(n_01^2*cos(theta)+sqrt(n_01^2-(sin(theta))^2));
+    t_p_12 = (2*n_12*cos(theta_2))/(n_12^2*cos(theta_2)+sqrt(n_12^2-(sin(theta_2))^2));
+
+    beta = (2*pi*n_SiN*d*cos(theta_2))/(wl(x));
+    L = [exp(-1i*beta), 0;0, exp(1i*beta)];
+
+    H_p_1 = 1/(t_p_01)*[1, r_p_01; r_p_01, 1];
+    H_p_2 = 1/(t_p_12)*[1, r_p_12; r_p_12, 1];
+    H_s_1 = 1/(t_s_01)*[1, r_s_01; r_s_01, 1];
+    H_s_2 = 1/(t_s_12)*[1, r_s_12; r_s_12, 1];
+    S_p = H_p_1*L*H_p_2;
+    S_s = H_s_1*L*H_s_2;
+    r_p = (S_p(1,2))/(S_p(2,2));
+    r_s = (S_s(1,2))/(S_s(2,2));
+    R_p(x) = (abs(r_p))^2;
+    R_s(x) = (abs(r_s))^2;
+end
+
+if theta ==0
+    R_p_0 = R_p;
+end
+if theta == pi/6
+    R_p_30 = R_p;
+    R_s_30 = R_s;
+end
+if theta == pi/3
+    R_p_60 = R_p;
+    R_s_60 = R_s;
+end
+end
+
+plot(wl,R_p_0*100,'k','LineWidth',1.3)
+hold on
+plot(wl,R_p_30*100,'b--','LineWidth',1.3)
+plot(wl,R_p_60*100,'b:','LineWidth',1.3)
+plot(wl,R_s_30*100,'r--','LineWidth',1.3)
+plot(wl,R_s_60*100,'r:','LineWidth',1.3)
+xlim([400 800])
+legend('0^{\circ}','30^{\circ} p','60^{\circ} p','30^{\circ} s','60^{\circ} s')
+title('Reflectance of SiN coating on silicon substrate')
+ylabel('Reflectance (%)')
+xlabel('Wavelength (nm)')
+hold off
