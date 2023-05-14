@@ -1,5 +1,5 @@
 # P4
-Presented here is the code used in the 4th semester project [TITLE]. The code is written in plain text, and is intended to be copy/pasted into the MATLAB editor. The code requires the [MATLAB Signal Processing Toolbox](https://se.mathworks.com/products/signal.html).
+Presented here is the code used in the 4th semester project [TITLE]. The code is written in plain text, and is intended to be copy/pasted into the MATLAB editor. To run the code, MATLAB's [Signal Processing Toolbox](https://se.mathworks.com/products/signal.html) must be installed.
 ## Thin-Film
 ### Single-Layer SiN/Si Anti-Reflective Coating
 * [Method 2](https://github.com/5-321/P4/blob/main/Thin-Film/Single-Layer/Method%202)
