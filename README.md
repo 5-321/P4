@@ -1,4 +1,5 @@
 # P4
+The code is written in plain text, and is meant to be copy/pasted into the MATLAB editor.
 ## Thin-Film
 ### Single-Layer SiN/Si Anti-Reflective Coating
 * [Method 2](https://github.com/5-321/P4/blob/main/Thin-Film/Single-Layer/Method%202)
