@@ -4,7 +4,7 @@ Presented here is the code used in the 4th semester project [TITLE]. The code is
 ### Single-Layer SiN/Si Anti-Reflective Coating
 * [Method 2](https://github.com/5-321/P4/blob/main/Thin-Film/Single-Layer/Method%202)
 ### Multilayer High-Reflective Coating
-[Method 2]([https://github.com/5-321/P4/blob/main/Thin-Film/Single-Layer/Method%202](https://github.com/5-321/P4/blob/main/Thin-Film/Multilayer/Method%202))
+* [Method 2](https://github.com/5-321/P4/blob/main/Thin-Film/Multilayer/Method%202)
 ## Photonic Crystals
 ### 1-Dimensional Photonic Crystals
 ### 2-Dimensional Photonic Crystals
