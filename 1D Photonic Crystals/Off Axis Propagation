@@ -1,0 +1,70 @@
+clear all
+
+%*****************************%
+%********Settings*************%
+%*****************************%
+
+d_1 = 80e-9;
+d_2 = 20e-9;
+
+n_1 = 1;
+n_2 = 3.61;
+
+%*****************************%
+%*****************************%
+%*****************************%
+
+d = d_1+d_2;
+c = 2.998e8;
+omega = linspace(0, 6*c/d, 1000);
+k_0 = omega./c;
+k_y = linspace(0, 2.5*pi/d, length(omega));
+for j = 1:length(k_y)
+    for x = 1:length(omega)
+        theta_1 = asin(k_y(j)/(k_0(x)*n_1));
+        theta_2 = asin(k_y(j)/(k_0(x)*n_2));
+        delta_1 = k_0.*n_1.*d_1.*cos(theta_1);
+        delta_2 = k_0.*n_2.*d_2.*cos(theta_2);
+        gamma_1_s = n_1*cos(theta_1);
+        gamma_2_s = n_2*cos(theta_2);
+        gamma_1_p = n_1/cos(theta_1);
+        gamma_2_p = n_2/cos(theta_2);
+        check_s = cos(delta_1(x))*cos(delta_2(x))-0.5*(gamma_1_s/gamma_2_s+gamma_2_s/gamma_1_s)*sin(delta_1(x))*sin(delta_2(x));
+        check_p = cos(delta_1(x))*cos(delta_2(x))-0.5*(gamma_1_p/gamma_2_p+gamma_2_p/gamma_1_p)*sin(delta_1(x))*sin(delta_2(x));
+        if any(-1<check_s) && (check_s <1) 
+            w_s(x) = omega(x);
+        else
+            w_s(x) = NaN;
+        end
+        if any(-1<check_p) && (check_p <1) 
+            w_p(x) = omega(x);
+        else
+            w_p(x) = NaN;
+        end
+    end
+    Mw_s(j,:) = w_s;
+    Mw_p(j,:) = w_p;
+end
+
+hold on
+for q=1:length(omega)
+    scatter(k_y*d,Mw_s(:,q).*d./c,0.4,'filled','MarkerFaceColor',"#63D471",'MarkerEdgeColor',"#63D471")
+    scatter(-k_y*d,Mw_p(:,q).*d./c,0.4,'filled','MarkerFaceColor',"#5C7AFF",'MarkerEdgeColor',"#5C7AFF")
+end
+
+plot(zeros(length(omega)),omega.*d./c,'k')
+plot(k_y*d,k_y*d,'--k')
+plot(-k_y*d,k_y*d,'--k')
+ylim([0 6])
+xlim([-2.5*pi 2.5*pi])
+xticks([-2*pi -pi 0 pi 2*pi])
+xticklabels({'-2\pi','-\pi','0','\pi','2\pi'})
+xlabel('k_y\Lambda')
+ylabel('\omega\Lambda/c')
+box on
+title('Band Structure')
+text(-2.5*pi*0.95,0.05*6,'p-polarized')
+text(2.5*pi*0.65,0.05*6,'s-polarized')
+hold off
+
+%print('billede1','-dpng','-r300');
