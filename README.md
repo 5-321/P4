@@ -12,7 +12,7 @@ Presented here is the code used in the 4th semester project [TITLE]. The code is
 ## Photonic Crystals
 ### 1-Dimensional Photonic Crystals
 * [Off Axis Propagation](https://github.com/5-321/P4/blob/main/1D%20Photonic%20Crystals/Off%20Axis%20Propagation)
-  * For this code it is recommended to add the command "print('image','-dpng','-r300');" to save the image in the MATLAB folder, since the scatter plot figure can be inconsistent.
+  * For this code it is recommended to add the command "print('OffAxisImage','-dpng','-r300');" to save the image in the MATLAB folder, since the scatter plot figure can be inconsistent.
 ### 2-Dimensional Photonic Crystals
 * [Square Lattice of Bars](https://github.com/5-321/P4/blob/main/2D%20Photonic%20Crystals/Square%20Lattice%20of%20Bars)
 
