@@ -1,0 +1,95 @@
+clear all
+
+%*****************************%
+%********Settings*************%
+%*****************************%
+
+d_1 = 40e-9; % Width of bars
+d = 100e-9; % Period
+N = 4;
+
+n_1 = 1; % Refractive index of surrounding medium
+n_2 = 2; % Refractive index of the bars
+
+% Lattice vectors of unit cell
+a_1 = d*[1; 0; 0];
+a_2 = d*[0; 1; 0];
+a_3 = [0; 0; 1];
+
+%*****************************%
+%*****************************%
+%*****************************%
+
+b_1 = 2*pi*cross(a_2,a_3)/dot(a_1,cross(a_2,a_3));
+b_2 = 2*pi*cross(a_3,a_1)/dot(a_1,cross(a_2,a_3));
+c = 2.998e8;
+eps_1 = n_1^2;
+eps_2 = n_2^2;
+u = 1;
+nv = zeros((2*N+1)^2);
+mv = zeros((2*N+1)^2);
+for m = -N:N
+    for n = -N:N
+        nv(u) = n;
+        mv(u) = m;
+        u = u+1;
+    end
+end
+
+for jk = 1:61
+    if jk==1
+        dist = zeros(jk(end));
+    end
+    if jk <= 21
+        ky = 0;
+        kx = pi/d*(jk-1)/20;
+        dist(jk) = pi/d*(jk-1)/20;
+    elseif jk <= 41
+        kx = pi/d;
+        ky = pi/d*(jk-21)/20;
+        dist(jk) = pi/d+pi/d*(jk-21)/20;
+    else
+        kx = pi/d-pi/d*(jk-41)/20;
+        ky = pi/d-pi/d*(jk-41)/20;
+        dist(jk) = 2*pi/d+sqrt((pi/d*(jk-41)/20)^2+(pi/d*(jk-41)/20)^2);
+    end
+    M_1_s = zeros((2*N+1)^2,(2*N+1)^2);
+    M_1_p = zeros((2*N+1)^2,(2*N+1)^2);
+    M_2 = zeros((2*N+1)^2,(2*N+1)^2);
+    k = [kx;ky;0];
+    for u_1 = 1:(2*N+1)^2
+        for u_2 = 1:(2*N+1)^2
+            n = nv(u_1);
+            m = mv(u_1);
+            nm = nv(u_2);
+            mm = mv(u_2);
+            M_1_s(u_1,u_1) = dot(m.*b_1+n.*b_2+k,m.*b_1+n.*b_2+k);
+            M_1_p(u_1,u_2) = dot(nm.*b_1+mm.*b_2+k,n.*b_1+m.*b_2+k);
+            if n-nm==0 && m-mm==0
+                M_2(u_1,u_2) = eps_1+d_1^2*(eps_2-eps_1)/d^2;
+            else
+                M_2(u_1,u_2) = ((eps_2-eps_1)/d^2)*sinc((n-nm)*d_1/d)*sinc((m-mm)*d_1/d)*d_1^2;
+            end
+        end
+    end
+    [V,D_s] = eigs(M_1_s,M_2,10,1);
+    D_2_s(:,jk) = diag(D_s).^0.5;
+    [V,D_p] = eigs(inv(M_2).*M_1_p,10,1);
+    D_2_p(:,jk) = diag(D_p).^0.5;
+end
+M_2;
+plot(dist,D_2_s.*d./(2*pi),'b',"LineWidth",1.3)
+hold on
+plot(dist,D_2_p.*d./(2*pi),'r',"LineWidth",1.3)
+title('Band Diagram')
+xticks([dist(1) dist(21) dist(41) dist(61)])
+xticklabels({'\Gamma','X','M','\Gamma'})
+ylabel('\omega\Lambda/2\pic')
+ylim([0 0.8])
+xlim([1 dist(jk)])
+line([dist(41) dist(41)], [0 10], 'Color', 'k');
+line([dist(21) dist(21)], [0 10], 'Color', 'k');
+leg = legend('show');
+title(leg,'Polarization')
+legend('s','','','','','','','','','','p')
+hold off
