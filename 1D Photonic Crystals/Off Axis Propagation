@@ -67,4 +67,4 @@ text(-2.5*pi*0.95,0.05*6,'p-polarized')
 text(2.5*pi*0.65,0.05*6,'s-polarized')
 hold off
 
-%print('billede1','-dpng','-r300');
+%print('OffAxis','-dpng','-r300');
