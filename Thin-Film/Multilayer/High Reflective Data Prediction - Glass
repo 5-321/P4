@@ -98,7 +98,7 @@ R_single_mean = mean(R_single_total*100);
     end
 end
 
-%%% EMPERICAL DATA IS IMPORTED %%%
+%%% DATA IS IMPORTED AND EXPORTED %%%
 switch layers
     case 3
         data = readtable("Sample9476.Sample.Raw.csv");
