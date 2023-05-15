@@ -1,0 +1,120 @@
+clear
+
+%%% SET LAYER COUNT %%%
+layers = 3;
+
+wl = linspace(350,800,1000);
+
+%%% REFRACTIVE INDEX %%%
+n_SiN = 1.959;
+n_SiO = 1.465;
+n_air = 1;
+n_Si  = 3.87;
+n_glass = 1.5;
+
+%%% LAYER THICKNESSES %%%
+thick1 = 75.89;     %Si3N4
+thick2 = 110.04;    %SiO2
+thick3 = 77.55;     %Si3N4
+thick4 = 89.99;     %SiO2
+thick5 = 78.6;      %Si3N4
+thick6 = 89.37;     %SiO2
+thick7 = 98.65;     %Si3N4
+thick8 = 79.24;     %SiO2
+thick9 = 76.84;     %Si3N4
+
+%%% REFLECTION AND TRANSMISSION COEFFICIENTS %%%f
+r_AirSiN = (1-n_SiN/n_air)/(1+n_SiN/n_air);
+r_SiNSiO = (1-n_SiO/n_SiN)/(1+n_SiO/n_SiN);
+r_SiOSiN = (1-n_SiN/n_SiO)/(1+n_SiN/n_SiO);
+r_SiNGlass = (1-n_glass/n_SiN)/(1+n_glass/n_SiN);
+r_GlassAir = (1-n_air/n_glass)/(1+n_air/n_glass);
+t_AirSiN = 2/(1+n_SiN/n_air);
+t_SiNSiO = 2/(1+n_SiO/n_SiN);
+t_SiOSiN = 2/(1+n_SiN/n_SiO);
+t_SiNGlass = 2/(1+n_glass/n_SiN);
+t_GlassAir = 2/(1+n_air/n_glass);
+
+%%% INTERFACE MATRIXES %%%
+H_AirSiN = (1/t_AirSiN)*[1, r_AirSiN; r_AirSiN, 1];
+H_SiNSiO = (1/t_SiNSiO)*[1, r_SiNSiO; r_SiNSiO, 1];
+H_SiOSiN = (1/t_SiOSiN)*[1, r_SiOSiN; r_SiOSiN, 1];
+H_SiNGlass = (1/t_SiNGlass)*[1, r_SiNGlass; r_SiNGlass, 1];
+H_GlassAir = (1/t_GlassAir)*[1, r_GlassAir; r_GlassAir, 1];
+
+for x = 1:length(wl)
+    
+    k_0 = (2*pi)/(wl(x));
+		
+    %%% LAYER MATRIXES %%%
+    L1_SiN = [exp(1i*k_0*thick1*n_SiN), 0; 0, exp(-1i*k_0*thick1*n_SiN)];
+    L2_SiO = [exp(1i*k_0*thick2*n_SiO), 0; 0, exp(-1i*k_0*thick2*n_SiO)];
+    L3_SiN = [exp(1i*k_0*thick3*n_SiN), 0; 0, exp(-1i*k_0*thick3*n_SiN)];
+    L4_SiO = [exp(1i*k_0*thick4*n_SiO), 0; 0, exp(-1i*k_0*thick4*n_SiO)];
+    L5_SiN = [exp(1i*k_0*thick5*n_SiN), 0; 0, exp(-1i*k_0*thick5*n_SiN)];
+    L6_SiO = [exp(1i*k_0*thick6*n_SiO), 0; 0, exp(-1i*k_0*thick6*n_SiO)];
+    L7_SiN = [exp(1i*k_0*thick7*n_SiN), 0; 0, exp(-1i*k_0*thick7*n_SiN)];
+    L8_SiO = [exp(1i*k_0*thick8*n_SiO), 0; 0, exp(-1i*k_0*thick8*n_SiO)];
+    L9_SiN = [exp(1i*k_0*thick9*n_SiN), 0; 0, exp(-1i*k_0*thick9*n_SiN)];
+		
+    for thickGlass = 1e6:1:1.006e6
+        
+        L0_Glass = [exp(1i*k_0*thickGlass*n_glass), 0; 0, exp(-1i*k_0*thickGlass*n_glass)];
+				
+       %%% ASSEMBLE S-MATRIX %%%
+    switch layers
+        case 3
+            % -> Air | SiN | SiO | SiN | Glass |
+            S = H_AirSiN*L9_SiN*H_SiNSiO*L8_SiO*H_SiOSiN*L7_SiN*H_SiNGlass*L0_Glass*H_GlassAir;
+        case 5
+            % -> Air | SiN | SiO | SiN | SiO | SiN | Glass |
+            S = H_AirSiN*L9_SiN*H_SiNSiO*L8_SiO*H_SiOSiN*L7_SiN*H_SiNSiO*L6_SiO*H_SiOSiN*L5_SiN*H_SiNGlass*L0_Glass*H_GlassAir;
+        case 7
+            % -> Air | SiN | SiO | SiN | SiO | SiN | SiO | SiN | Glass |
+            S = H_AirSiN*L9_SiN*H_SiNSiO*L8_SiO*H_SiOSiN*L7_SiN*H_SiNSiO*L6_SiO*H_SiOSiN*L5_SiN*H_SiNSiO*L4_SiO*H_SiOSiN*L3_SiN*H_SiNGlass*L0_Glass*H_GlassAir;
+        case 9
+            % -> Air | SiN | SiO | SiN | SiO | SiN | SiO | SiN | SiO | SiN | Glass |
+            S = H_AirSiN*L9_SiN*H_SiNSiO*L8_SiO*H_SiOSiN*L7_SiN*H_SiNSiO*L6_SiO*H_SiOSiN*L5_SiN*H_SiNSiO*L4_SiO*H_SiOSiN*L3_SiN*H_SiNSiO*L2_SiO*H_SiOSiN*L1_SiN*H_SiNGlass*L0_Glass*H_GlassAir;
+        otherwise
+            disp('Error in switch. Layer not [3,5,7,9]?')
+    end
+		
+    %%% COMPUTE REFLECTANCE %%%
+    r = (S(1,2))/(S(2,2));
+    R_single = (abs(r))^2;
+		
+    if thickGlass == 1e6
+        R_single_total = R_single;
+    else
+        R_single_total(end+1) = R_single;
+    end
+    end
+    
+R_single_mean = mean(R_single_total*100);
+    if x == 1
+        R_spec = R_single_mean;
+    else
+        R_spec(:,end+1) = R_single_mean;
+    end
+end
+
+%%% EMPERICAL DATA IS IMPORTED %%%
+switch layers
+    case 3
+        data = readtable("Sample9476.Sample.Raw.csv");
+        writematrix(R_spec,'highreflect3layers.txt')
+    case 5
+        data = readtable("Sample9475.Sample.Raw.csv");
+        writematrix(R_spec,'highreflect5layers.txt')
+    case 7
+        data = readtable("Sample9473.Sample.Raw.csv");
+        writematrix(R_spec,'highreflect7layers.txt')
+    case 9
+        data = readtable("Sample9474.Sample.Raw.csv");
+        writematrix(R_spec,'highreflect9layers.txt')
+end
+
+plot(wl,R_spec)
+hold on
+plot(data{:,"nm"},data{:,"x_R"})
+hold off
