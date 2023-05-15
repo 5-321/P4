@@ -1,12 +1,21 @@
 clear all
-n_SiN = 2.0105;
-n_Si = 3.8823;
+
+%*****************************%
+%********Settings*************%
+%*****************************%
+
+for theta = [0 pi/6 pi/3] % Angles in Rad
+lambda_0 = 630; % Design Wavelength
+n_SiN = 2.0105; % Coating
+n_Si = 3.8823; % Substrate
 n_0 = 1;
 
-lambda_0 = 630;
+%*****************************%
+%*****************************%
+%*****************************%
+
 d = lambda_0/(4*n_SiN);
 wl = linspace(400,800,401);
-for theta = [0 pi/6 pi/3]
 
 for x = 1:length(wl)
     n_01 = n_SiN/n_0;
