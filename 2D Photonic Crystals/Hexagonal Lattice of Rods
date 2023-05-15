@@ -1,5 +1,5 @@
 clear all
-
+% Hexagonal Lattice of Rods
 %*****************************%
 %********Settings*************%
 %*****************************%
@@ -82,7 +82,9 @@ end
 plot(dist,D_2_s.*d./(2*pi),'b',"LineWidth",1.3)
 hold on
 plot(dist,D_2_p.*d./(2*pi),'r',"LineWidth",1.3)
-title('Band Diagram')
+ratio = a/d;
+title_str = sprintf('Band Diagram with n_1=%s, n_2=%s and a=%s\\Lambda', num2str(round(n_1,2), '%g'), num2str(round(n_2,2), '%g'), num2str(round(ratio,2), '%g'));
+title(title_str)
 xticks([dist(1) dist(21) dist(41) dist(61)])
 xticklabels({'\Gamma','M','K','\Gamma'})
 ylabel('\omega\Lambda/2\pic')
