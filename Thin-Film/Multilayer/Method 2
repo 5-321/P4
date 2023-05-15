@@ -1,16 +1,22 @@
 clear all
-
 xxx = 1;
 
-for theta = [0 30 60]
-%%%% SETTINGS %%%%
-lambda_0 = 500;
-n_i = 1;
-n_1 = 1.38;
-n_2 = 2.3;
-n_f = 1.50;
+%*****************************%
+%********Settings*************%
+%*****************************%
 
+for theta = [0 30 60] % Angles in degrees
+lambda_0 = 500; % Design wavelength
+n_i = 1; % Initial layer
+n_1 = 1.38; % Low refractive index
+n_2 = 2.3; % High refractive index
+n_f = 1.50; % Substrate
 layers = 9; % MUST BE ODD
+
+%*****************************%
+%*****************************%
+%*****************************%
+
 
 %%%% ANGLES %%%%
 theta_i = deg2rad(theta);
