@@ -13,15 +13,15 @@ n_Si  = 3.87;
 n_glass = 1.5;
 
 %%% LAYER THICKNESSES %%%
-thick1 = 75.89+factor;     %Si3N4
-thick2 = 110.04+factor;    %SiO2
-thick3 = 77.55+factor;     %Si3N4
-thick4 = 89.99+factor;     %SiO2
-thick5 = 78.6+factor;      %Si3N4
-thick6 = 89.37+factor;     %SiO2
-thick7 = 98.65+factor;     %Si3N4
-thick8 = 79.24+factor;     %SiO2
-thick9 = 76.84+factor;     %Si3N4
+thick1 = 75.89;     %Si3N4
+thick2 = 110.04;    %SiO2
+thick3 = 77.55;     %Si3N4
+thick4 = 89.99;     %SiO2
+thick5 = 78.6;      %Si3N4
+thick6 = 89.37;     %SiO2
+thick7 = 98.65;     %Si3N4
+thick8 = 79.24;     %SiO2
+thick9 = 76.84;     %Si3N4
 
 %%% REFLECTION AND TRANSMISSION COEFFICIENTS %%%
 r_AirSiN = (1-n_SiN/n_air)/(1+n_SiN/n_air);
