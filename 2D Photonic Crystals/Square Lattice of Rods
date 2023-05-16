@@ -89,7 +89,7 @@ xticks([dist(1) dist(21) dist(41) dist(61)])
 xticklabels({'\Gamma','X','M','\Gamma'})
 ylabel('\omega\Lambda/2\pic')
 ylim([0 0.8])
-xlim([1 dist(jk)])
+xlim([0 dist(jk)])
 line([dist(41) dist(41)], [0 10], 'Color', 'k');
 line([dist(21) dist(21)], [0 10], 'Color', 'k');
 leg = legend('show');
