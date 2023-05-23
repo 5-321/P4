@@ -1,0 +1,87 @@
+clear all
+
+eps_0 = 8.854 * 10^-(12);
+mu_0 = 1.257 * 10^(-6);
+n_h = 1.959;
+n_l = 1.465;
+n_s = 3.87;
+wl_0 =633;
+y_0 = sqrt(eps_0/mu_0);
+
+d_h = wl_0/(4*n_h);
+d_l = wl_0/(4*n_l);
+wl = linspace(400,850,451);
+layers = 9;
+n = (layers-1)/2;
+
+for theta_0 = [0 pi/6 pi/3]
+    
+    y_0p = y_0/cos(theta_0);
+    y_0s = y_0*cos(theta_0);
+    theta_h = asin(sin(theta_0)/n_h);
+    theta_l = asin((n_h/n_l)*sin(theta_h));
+    theta_s = asin((n_h/n_s)*sin(theta_h));
+   
+    y_hp = (sqrt(eps_0/mu_0)*n_h)/cos(theta_h);
+    y_hs = sqrt(eps_0/mu_0)*n_h*cos(theta_h);
+    y_lp = (sqrt(eps_0/mu_0)*n_l)/cos(theta_l);
+    y_ls = sqrt(eps_0/mu_0)*n_l*cos(theta_l);
+    y_sp = (sqrt(eps_0/mu_0)*n_s)/cos(theta_s);
+    y_ss = sqrt(eps_0/mu_0)*n_s*cos(theta_s);
+
+        for j = 1:length(wl)
+
+            delta_l = 2*pi*d_l*cos(theta_l)*n_l/wl(j);
+            delta_h = 2*pi*d_h*cos(theta_h)*n_h/wl(j);
+            
+            M_hp = [cos(delta_h) -1i*sin(delta_h)/y_hp;-1i*y_hp*sin(delta_h) cos(delta_h)];
+            M_lp = [cos(delta_l) -1i*sin(delta_l)/y_lp;-1i*y_lp*sin(delta_l) cos(delta_l)];
+
+            M_hs = [cos(delta_h) -1i*sin(delta_h)/y_hs;-1i*y_hs*sin(delta_h) cos(delta_h)];
+            M_ls = [cos(delta_l) -1i*sin(delta_l)/y_ls;-1i*y_ls*sin(delta_l) cos(delta_l)];
+
+            H_p = (M_hp*M_lp)^n*M_hp*[1;y_sp];
+            H_s = (M_hs*M_ls)^n*M_hs*[1;y_ss];
+
+            B_p = H_p(1,1);
+            C_p = H_p(2,1);
+
+            B_s = H_s(1,1);
+            C_s = H_s(2,1);
+
+            r_p = ((y_0p*B_p)-C_p)/((y_0p*B_p)+C_p);
+            r_s = ((y_0s*B_s)-C_s)/((y_0s*B_s)+C_s);
+
+            R_p(j) = abs(r_p)^2;
+            R_s(j) = abs(r_s)^2;
+        end
+
+    if theta_0 == 0
+    R_p0 = R_p;
+
+    end
+    if theta_0 == pi/6
+        R_p30 = R_p;
+        R_s30 = R_s;
+    end
+    if theta_0 == pi/3
+        R_p60 = R_p;
+        R_s60 = R_s;
+    end
+end
+    
+plot(wl,R_p0*100,'k','LineWidth',1.3)
+hold on
+plot(wl,R_p30*100,'b--','LineWidth',1.3)
+plot(wl,R_p60*100,'b:','LineWidth',1.3)
+plot(wl,R_s30*100,'r--','LineWidth',1.3)
+plot(wl,R_s60*100,'r:','LineWidth',1.3)
+leg1 = legend('$0^{\circ}$','$30^{\circ}p$','$60^{\circ}p$','$30^{\circ}s$','$60^{\circ}s$');
+title('Reflectance of 9-layer SiN/SiO2 coating on silicon substrate')
+xlabel('Wavelength (nm)')
+ylabel('Reflectance (%)')
+[leg,att] = legend('show');
+title(leg,'$\theta_i$')
+set(leg1,'Interpreter','latex')
+ylim([0 100])
+hold off
