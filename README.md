@@ -9,6 +9,8 @@ Presented here is the code used in the 4th semester project. The code is written
 ### Multilayer High-Reflective Coating
 * [Method 1](https://github.com/5-321/P4/blob/main/Thin-Film/Multilayer/Method%201)
 * [Method 2](https://github.com/5-321/P4/blob/main/Thin-Film/Multilayer/Method%202)
+* [High Reflection Data Prediction - Silicon](https://github.com/5-321/P4/blob/main/Thin-Film/Multilayer/High%20Reflection%20Data%20Prediction%20-%20Silicon)
+* [High Reflective Data Prediction - Glass](https://github.com/5-321/P4/blob/main/Thin-Film/Multilayer/High%20Reflective%20Data%20Prediction%20-%20Glass)
 
 
 ## Photonic Crystals
