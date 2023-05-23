@@ -11,6 +11,8 @@ Presented here is the code used in the 4th semester project. The code is written
 
 ## Photonic Crystals
 ### 1-Dimensional Photonic Crystals
+* [Analytical Model](https://github.com/5-321/P4/blob/main/1D%20Photonic%20Crystals/Analytical%20Model%20)
+* [Plane Wave Expansion](https://github.com/5-321/P4/blob/main/1D%20Photonic%20Crystals/Plane%20Wave%20Expansion)
 * [Off Axis Propagation](https://github.com/5-321/P4/blob/main/1D%20Photonic%20Crystals/Off%20Axis%20Propagation)
   * For this code it is recommended to add the command "print('OffAxis','-dpng','-r300');" to save the image in the MATLAB folder, since the scatter plot figure can be inconsistent.
 ### 2-Dimensional Photonic Crystals
