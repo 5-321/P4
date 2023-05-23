@@ -1,4 +1,4 @@
-# P4
+# Modelling Anti-Reflective and High Reflective Materials Made of Dielectric Thin-Film Coatings of Si3N4 & SiO2 and Using Theoretical Models of Photonic Crystals to Predict Bandgaps in Periodic Dielectric Materials
 Presented here is the code used in the 4th semester project. The code is written in plain text and is intended to be copy/pasted into the MATLAB editor. To run the code, MATLAB's [Signal Processing Toolbox](https://se.mathworks.com/products/signal.html) must be installed.
 
 
