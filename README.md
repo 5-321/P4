@@ -4,8 +4,10 @@ Presented here is the code used in the 4th semester project. The code is written
 
 ## Thin-Film
 ### Single-Layer Anti-Reflective Coating
+* [Method 1](https://github.com/5-321/P4/blob/main/Thin-Film/Single-Layer/Method%201)
 * [Method 2](https://github.com/5-321/P4/blob/main/Thin-Film/Single-Layer/Method%202)
 ### Multilayer High-Reflective Coating
+* [Method 1](https://github.com/5-321/P4/blob/main/Thin-Film/Multilayer/Method%201)
 * [Method 2](https://github.com/5-321/P4/blob/main/Thin-Film/Multilayer/Method%202)
 
 
