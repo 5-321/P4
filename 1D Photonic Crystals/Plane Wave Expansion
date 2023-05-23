@@ -1,0 +1,62 @@
+clear all
+%%*****************************%%
+ %* * * * * Settings * * * * * %
+%%*****************************%%
+
+d_1 = 80e-9;
+d_2 = 20e-9;
+N = 20;
+
+n_1 = 1;
+n_2 = 3.61;
+
+%%*****************************%%
+ %* * * * * * * * * * * * * * *%
+%%*****************************%%
+
+eps_1 = n_1^2;
+eps_2 = n_2^2;
+c = 2.998e8;
+d = d_1+d_2;
+kz = linspace(0,pi/d,100);
+for x = 1:length(kz)
+    for n = -N:N
+        for p = -N:N
+            if p-n==0
+                eps_pn = eps_2-(eps_2-eps_1)*d_1/d;
+                M_s(n+N+1,p+N+1) = (kz(x)+2*pi*p/d)^2;
+                M_p(n+N+1,p+N+1) = (2*pi*n/d+kz(x))^2+(2*pi*n/d+kz(x))*(2*pi*(p-n)/d);
+            else
+                eps_pn = (eps_1-eps_2)*(d_1/d)*sinc((p-n)*d_1/d);
+                M_s(n+N+1,p+N+1) = 0;
+                M_p(n+N+1,p+N+1) = 0;
+            end
+            eps_mat(n+N+1,p+N+1) = eps_pn;
+        end
+    end
+    [V_s,D_s]=eigs(M_s,eps_mat,5,1);
+    [V_p,D_p]=eigs(inv(eps_mat)*M_p,5,1);
+    D_2_s = diag(D_s);
+    omega_s(:,x) = sqrt(D_2_s)*c;
+    D_2_p = diag(D_p);
+    omega_p(:,x) = sqrt(D_2_p)*c;
+end
+plot(kz*d,omega_p.*d./c,'k')
+hold on
+plot(-kz*d,omega_p.*d./c,'k')
+xlabel('k\Lambda')
+ylabel('\omega\Lambda/c')
+ylim([0 4])
+xlim([-pi pi])
+title('S-Polarized')
+hold off
+
+plot(kz*d,omega_s.*d./c,'k')
+hold on
+plot(-kz*d,omega_s.*d./c,'k')
+xlabel('k\Lambda')
+ylabel('\omega\Lambda/c')
+ylim([0 4])
+xlim([-pi pi])
+title('P-Polarized')
+hold off
