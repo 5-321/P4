@@ -1,0 +1,49 @@
+clear all
+%%*****************************%%
+ %* * * * * Settings * * * * * %
+%%*****************************%%
+
+theta = 0; % In Degrees
+n_1 = 1;
+n_2 = 3.61;
+
+d_1 = 80e-9;
+d_2 = 20e-9;
+
+%%*****************************%%
+ %* * * * * * * * * * * * * * *%
+%%*****************************%%
+
+theta = deg2rad(theta);
+theta_1 = asin(sin(theta)/n_1);
+theta_2 = asin(sin(theta)/n_2);
+d = d_1+d_2;
+c = 2.998e8;
+omega = linspace(0, 4*c/d, 10000);
+delta_1 = n_1.*omega.*d_1./c;
+delta_2 = n_2.*omega.*d_2./c;
+gamma_1_s = n_1*cos(theta_1);
+gamma_2_s = n_2*cos(theta_2);
+gamma_1_p = n_1/cos(theta_1);
+gamma_2_p = n_2/cos(theta_2);
+for x = 1:length(omega)
+    k_bl_s(x) = 1/(d)*acos(cos(delta_1(x))*cos(delta_2(x))-0.5*(gamma_2_s/gamma_1_s+gamma_1_s/gamma_2_s)*sin(delta_1(x))*sin(delta_2(x)));
+    k_bl_p(x) = 1/(d)*acos(cos(delta_1(x))*cos(delta_2(x))-0.5*(gamma_2_p/gamma_1_p+gamma_1_p/gamma_2_p)*sin(delta_1(x))*sin(delta_2(x)));
+    if not(real(1i*k_bl_s(x))==0)
+        k_bl_s(x) = NaN;
+    end
+    if not(real(1i*k_bl_p(x))==0)
+        k_bl_p(x) = NaN;
+    end
+end
+plot(k_bl_s*d,omega*d/c,'k',"LineWidth",1.3)
+hold on
+plot(-k_bl_p*d,omega*d/c,'k',"LineWidth",1.3)
+xlim([-pi pi])
+xlabel('k\Lambda')
+ylabel('\omega\Lambda/c')
+title('Band Diagram')
+text(-pi*0.95,0.05*6,'p-polarized')
+text(pi*0.65,0.05*6,'s-polarized')
+ylim([0 4])
+hold off
