@@ -41,22 +41,14 @@ for x = 1:length(kz)
     D_2_p = diag(D_p);
     omega_p(:,x) = sqrt(D_2_p)*c;
 end
-plot(kz*d,omega_p.*d./c,'k')
+plot(kz*d,omega_s.*d./c,'k')
 hold on
 plot(-kz*d,omega_p.*d./c,'k')
 xlabel('k\Lambda')
 ylabel('\omega\Lambda/c')
 ylim([0 4])
 xlim([-pi pi])
-title('S-Polarized')
-hold off
-
-plot(kz*d,omega_s.*d./c,'k')
-hold on
-plot(-kz*d,omega_s.*d./c,'k')
-xlabel('k\Lambda')
-ylabel('\omega\Lambda/c')
-ylim([0 4])
-xlim([-pi pi])
-title('P-Polarized')
+title('Band Diagram')
+text(-pi*0.95,0.05*6,'p-polarized')
+text(pi*0.65,0.05*6,'s-polarized')
 hold off
